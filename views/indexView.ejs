@@ -1,0 +1,124 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <style>
+        .result-table{
+            width: 100%;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+
+    <body ng-app="myApp">
+   <!-- I made the alias to get a lower page size -->
+    <div ng-controller="mainController as mainCtrl" class="page-wrap">
+
+<h1>
+    Basic order search
+</h1>
+
+        Company
+
+        <select ng-model="queryData.currentCompany">
+            <option ng-repeat="company in allCompanies track by $index" value="{{company}}">
+                {{company}}
+            </option>
+        </select>
+
+        Addresses
+
+        <select ng-model="queryData.currentAddress">
+            <option ng-repeat="address in allAddresses track by $index" value="{{address}}">
+                {{address}}
+            </option>
+        </select>
+
+        <button ng-click="search()">Search</button>
+        <button ng-click="getDataByOccurance()">Get Data by occurance</button>
+
+        <table class="result-table">
+            <tr>
+                <td><strong>Order id</strong></td>
+                <td><strong>companyName</strong></td>
+                <td><strong>customerAddress</strong></td>
+                <td><strong>orderedItem</strong></td>
+                <td><strong>occurance</strong></td>
+            </tr>
+            <tr ng-repeat="order in ordersData">
+                <td>{{$index}}</td>
+                <td>{{order.companyName}}</td>
+                <td>{{order.customerAddress}}</td>
+                <td>{{order.orderedItem}}</td>
+                <td>{{order.occurances}}</td>
+                <td ng-click="deleteOrder(order.orderId)" style="text-decoration: underline; color: red;">Delete</td>
+            </tr>
+        </table>
+    </div>
+
+
+    <script>
+
+        var app = angular.module('myApp', []);
+
+
+        app.controller("mainController", ['$scope', '$http', function ($scope, $http) {
+
+            $scope.queryData = {
+                currentCompany: null,
+                currentAddress: null
+            };
+
+            $http.get('/api/allCompanies').
+            success(function (data) {
+                $scope.allCompanies = data;
+            });
+
+            $http.get('/api/getData').
+            success(function (data) {
+                console.log(data);
+                $scope.ordersData = data;
+            });
+
+            $http.get('/api/allAddresses').
+            success(function (data) {
+                $scope.allAddresses = data;
+            });
+
+
+            $http.get('/api/getOrderedDataByOccurance').
+            success(function (data) {
+                console.log(data);
+            });
+
+            $scope.getDataByOccurance = function (){
+                $http({
+                    url: '/api/getOrderedDataByOccurance',
+                    method: "GET"
+                }).then(function (data) {
+                    $scope.ordersData = data.data;
+                    console.log(data.data);
+                });
+
+            };
+
+            $scope.search = function (){
+                $http({
+                    url: '/api/getSearchedData',
+                    method: "POST",
+                    data: $scope.queryData
+                }).then(function (data) {
+                    $scope.ordersData = data.data;
+                });
+            };
+
+            $scope.deleteOrder = function (orderId){
+
+                alert("Don't delete anything");
+
+            }
+        }]);
+
+    </script>
+
+    </body>
+    </html>
