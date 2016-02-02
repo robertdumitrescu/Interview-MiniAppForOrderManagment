@@ -6,6 +6,13 @@ I applied for the following position:
 
 > Full-stack web developer
 
+
+## Demo
+
+I deployed the demo behind two reverse proxies with a load balancer. If you have any trouble viewing the demo, please contact me on **robertdum01@gmail.com**.
+> The fully functional demo can be found here: [Demo-Interview-MiniAppForOrderManagment](http://demoordermanagment.rdumitrescu.com/)
+
+
 ## Task
 
 So the task sounds like this:
@@ -121,7 +128,6 @@ The data processing is made in the **ordersModel.js** under **models** folder.
 Also I've written the basic JsDoc keywords tags in order to make the code easy to read.
 
 Anyone is free to fork and develop based on this solution. It's nice to have a link back if it's possible.
-
 
 
 ##Contact
